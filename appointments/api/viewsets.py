@@ -30,3 +30,20 @@ class Agendamentoviewsets(viewsets.ModelViewSet):
     # Ordenando por data ou pelo nome do cliente
     ordering_fields = ['data', 'cliente__nome']
     ordering = ['data'] 
+
+@extend_schema(tags=['Clientes'])
+class ClienteViewsets(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = serializers.ClienteSerializer 
+    queryset = models.Cliente.objects.all()
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['nome', 'email', 'cpf']
+    ordering = ['nome']
+
+@extend_schema(tags=['Serviços'])
+class ServicoViewsets(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = serializers.ServiçoSerializer
+    queryset = models.Serviço.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['nome', 'descricao']
